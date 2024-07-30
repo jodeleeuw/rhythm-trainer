@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clap Detector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    #clap-notification {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border-radius: 5px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Clap Detector</h1>
+  <p id="clap-notification">Clap detected!</p>
+  
+  <script type="module">
+    import { ClapDetector } from './ClapDetector.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+    const clapDetector = new ClapDetector();
+
+    // Record audio for 5 seconds
+    await clapDetector.startRecording(5);
+});
+  </script>
+</body>
+</html>
