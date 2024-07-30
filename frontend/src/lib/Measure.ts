@@ -5,12 +5,34 @@ class Measure {
   private points: number;
   private category: string;
   private score: Score;
+  private bpm: number;
 
-  constructor(timeSignature: number[], points: number, category: string, score: Score) {
+  constructor(timeSignature: number[], points: number, category: string, score: Score, bpm: number) {
     this.timeSignature = timeSignature;
     this.points = points;
     this.category = category;
     this.score = score;
+    this.bpm = bpm;
+  }
+
+  getPoints (): number {
+    return this.points;
+  }
+
+  getScore () {
+    return this.score.getScore();
+  }
+
+  getBpm(): number { 
+    return this.bpm;
+  }
+
+  getTimeSignatureString(): string{
+    return this.timeSignature[0] + "/" + this.timeSignature[1];
+  }
+
+  getCategory(): string {
+    return this.category;
   }
 
 }

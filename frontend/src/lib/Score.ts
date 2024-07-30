@@ -5,8 +5,17 @@ class Score {
     this.notes = notes;
   } 
 
-  getVexString(){
+  getScore(){
     // converts to a string for the method to call
+    var res = "";
+    for (var i = 0; i < this.notes.length; i++) {
+      const note = this.notes[i]; 
+      
+      if (i > 0) res += ", " + note;
+      else res = note;
+    }
+
+    return res;
   }
 
   getTimeIntervals(){
