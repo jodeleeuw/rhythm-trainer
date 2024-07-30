@@ -2,9 +2,9 @@ export default class ClapDetector {
 
     options = {
       // energy threshold for claps
-      clapThreshold: 70,
+      clapThreshold: 60,
       // typical freq range for claps
-      highFrequencyRange: [2200, 2800],
+      highFrequencyRange: [2000, 2800],
       minClapInterval: 300
     }
   
@@ -41,6 +41,7 @@ export default class ClapDetector {
 
     async startRecording(duration: number) {
         try {
+            console.log("Requesting microphone access...");
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             this.mediaRecorder = new MediaRecorder(stream);
             this.recordedChunks = []; // Ensure recordedChunks is initialized here
@@ -49,11 +50,13 @@ export default class ClapDetector {
                     this.recordedChunks.push(event.data);
                 }
             };
+            console.log("Starting recording...");
             this.mediaRecorder.start();
     
             // Use a promise to wait for the recording to stop
             return new Promise((resolve) => {
                 setTimeout(async () => {
+                    console.log("Stopping recording...");
                     await this.stopRecordingAndDetectClaps();
                     resolve(this.clapTimestamps);
                 }, duration*1000);
@@ -64,12 +67,28 @@ export default class ClapDetector {
         }
     }
     async stopRecordingAndDetectClaps() {
-        this.mediaRecorder.stop();
+      return new Promise((resolve, reject) => {
+        // Ensure mediaRecorder is not null
+        if (!this.mediaRecorder) {
+            reject('MediaRecorder is not initialized');
+            return;
+        }
+
         this.mediaRecorder.onstop = async () => {
-          const recordedBlob = new Blob(this.recordedChunks, { type: 'audio/wav' });
-          await this.processAudioBuffer(recordedBlob);
-          console.log(this.numberOfClaps, this.clapTimestamps);
+            try {
+                const recordedBlob = new Blob(this.recordedChunks, { type: 'audio/wav' });
+                await this.processAudioBuffer(recordedBlob);
+                console.log("Number of claps detected:", this.numberOfClaps);
+                console.log(this.numberOfClaps, this.clapTimestamps);
+                resolve(this.clapTimestamps); // Resolve the promise when done
+            } catch (error) {
+                reject(error); // Reject the promise on error
+            }
         };
+
+        // Stop the media recorder which triggers the onstop event
+        this.mediaRecorder.stop();
+    });
         
       }
     
@@ -124,6 +143,7 @@ export default class ClapDetector {
       const metClapThreshold = highFrequencyEnergy > this.options.clapThreshold
       const timeSinceLastClap = Date.now() - this.lastClapTime
       const metMinClapInterval = timeSinceLastClap > this.options.minClapInterval
+      console.log(metClapThreshold, metMinClapInterval)
       if (metClapThreshold && metMinClapInterval) {
         console.log('Clap detected!')
         this.lastClapTime = Date.now();

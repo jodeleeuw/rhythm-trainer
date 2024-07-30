@@ -1,16 +1,26 @@
+import Score from "./Score";
+import Measure from "./Measure";
+
 export class AccuracyCalculator{
-    private measure!: any;
+    private measure!: Measure;
+    private score!: Score;
     private scoreTimestamps!: Array<number>;
     private clapTimestamps!: Array<number>;
+    private scoreDictionary!: Map<string, number>;
 
     constructor() {
         this.score;
         this.clapTimestamps
     }
 
-    private scoreToTimestamps(): void{
+    private scoreToTimestamps(measure): void{
+        this.measure = measure
         const score = measure.score;
-        cons
+        const timeSignature = measure.timeSignature;
+        const bpm = measure.bpm;
+
+
+
 
         this.scoreTimestamps;
     }
