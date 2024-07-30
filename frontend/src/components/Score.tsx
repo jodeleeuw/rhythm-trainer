@@ -1,17 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {  Factory } from 'vexflow'; // Vex, Flow, Stave, EasyScore
 
 
 const Score = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [blank, setBlank] = useState(true);
 
   useEffect(() => {
     const container = containerRef.current;
     if (container) {
       // Ensure the container has an id
-      if (!container.id) {
-        container.id = 'output';
-      }
       const vf = new Factory({
         renderer: { elementId: container.id, width: 500, height: 200 },
       });
@@ -22,21 +20,24 @@ const Score = () => {
       system
         .addStave({
           voices: [
-            score.voice(score.notes('C#5/q, B4, A4, G#4', { stem: 'up' })),
-            score.voice(score.notes('C#4/h, C#4', { stem: 'down' })),
+            score.voice(score.notes('C#5/q, B4, A4, G#4', { stem: 'down' })),
+            score.voice(score.notes('C#4/h, E#5/q, E#5/q', { stem: 'down' })),
           ],
         })
         .addClef('treble')
         .addTimeSignature('4/4');
-
-      vf.draw();
+      
+      if (blank) {
+        vf.draw();
+        setBlank(false);
+      }
     }
   }, []);
 
   return (
-    <div>
+    <>
       <div id="output" ref={containerRef}></div>
-    </div>
+    </>
   );
 };
 
