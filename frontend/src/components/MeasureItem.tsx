@@ -1,16 +1,12 @@
-import Score from "../lib/Score";
 import Measure from "../lib/Measure";
 import ScoreComponent from "./ScoreComponent";
 
-const notes = ['C#4/h', 'E#5/q', 'E#5/q'];
-const testScore = new Score(notes);
-const measure = new Measure([4,4], 100, "testing", testScore, 150);
-
 interface MeasureItemProps {
   measure: Measure;
+  id: number; // Add key as a prop
 }
 
-const MeasureItem: React.FC<MeasureItemProps> = () => {
+const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id }) => {
 
   const handleStart = () => {
     console.log("Start has been clicked"); 
@@ -31,7 +27,7 @@ const MeasureItem: React.FC<MeasureItemProps> = () => {
           <p className='measureField'>{measure.getCategory()}</p>
           <p className='measureField'>{measure.getBpm()} bpm</p>
         </div>
-        <ScoreComponent notes={measure.getScore()} timeSignature={measure.getTimeSignatureString()}/>
+        <ScoreComponent notes={measure.getScore()} timeSignature={measure.getTimeSignatureString()} id={id}/>
         <button onClick={handleStart}>Start</button>
       </div>
     </>

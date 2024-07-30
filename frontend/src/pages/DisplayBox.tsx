@@ -1,9 +1,14 @@
-
+import { displayBoxData } from "../data/data";
+import MeasureItem from "../components/MeasureItem";
 
 const DisplayBox = () => {
   return (
     <>
-      <p>this is the display box</p>
+      <div className="displayBoxContainer">
+        {displayBoxData.map((measure, index) => (
+          <MeasureItem key={index} measure={measure} id={index}/>
+        ))}
+      </div>
     </>
   )
 }

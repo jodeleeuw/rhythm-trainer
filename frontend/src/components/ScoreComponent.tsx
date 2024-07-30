@@ -4,9 +4,10 @@ import { Factory } from 'vexflow'; // Vex, Flow, Stave, EasyScore'
 interface ScoreComponentProps {
   notes: string;
   timeSignature: string;
+  id: number; // Add key as a prop
 }
 
-const ScoreComponent: React.FC<ScoreComponentProps> = ({ notes, timeSignature }) => {
+const ScoreComponent: React.FC<ScoreComponentProps> = ({ notes, timeSignature, id }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [blank, setBlank] = useState(true);
 
@@ -14,7 +15,7 @@ const ScoreComponent: React.FC<ScoreComponentProps> = ({ notes, timeSignature })
     const container = containerRef.current;
     if (container) {
       if (!container.id) {
-        container.id = 'output';
+        container.id = 'output' + id;
       }
 
       if (blank){
@@ -25,10 +26,6 @@ const ScoreComponent: React.FC<ScoreComponentProps> = ({ notes, timeSignature })
         const score = vf.EasyScore();
         const system = vf.System();
 
-        console.log("system.getStaves:", system.getStaves(), "length:", system.getStaves().length);
-        console.log(score);
-        console.log("voices,", system.getVoices());
-        
         system
         .addStave({
           voices: [
@@ -47,7 +44,7 @@ const ScoreComponent: React.FC<ScoreComponentProps> = ({ notes, timeSignature })
   return (
     <>
       <div className="scoreHolder">
-        <div id="output" ref={containerRef}></div>
+        <div className="scoreMeasure" id={"output" + id} ref={containerRef}></div>
       </div>
     </>
   );

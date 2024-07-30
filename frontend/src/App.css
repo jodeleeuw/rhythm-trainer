@@ -41,11 +41,12 @@
   color: #888;
 }
 
-/* */
-#output {
+/* Score */
+.scoreMeasure {
   background-color: white;
 }
 
+/* Aligning measure itmes within box */
 .measureItem{
   margin: 0px;
   padding: 10px;
@@ -60,4 +61,10 @@
 
 .measureInfo {
   display: flex;
+}
+
+/* DisplayBox */
+.displayBoxContainer {
+  display: flex;
+  flex-direction: row;
 }
