@@ -28,12 +28,10 @@ const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id }) => {
   };
   
   const handleStart = () => {
-    console.log("Start has been clicked"); 
-
     const bpm = measure.getBpm();
     const beats = measure.getTimeSignatureBeats(); // can implement a screen changing thing here
-
-    playBeat(bpm, beats);      
+    playBeat(bpm, beats);  
+       
     // then record 
 
     // then call the test method to see whether it matches
