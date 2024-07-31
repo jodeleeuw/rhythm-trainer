@@ -35,6 +35,10 @@ class Measure {
     return this.timeSignature[0] + "/" + this.timeSignature[1];
   }
 
+  getTimeSignatureBeats() : number {
+    return this.timeSignature[0];
+  }
+
   getTimeSignature(): number[] {
     return this.timeSignature;
   }

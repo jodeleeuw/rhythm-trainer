@@ -5,7 +5,7 @@ interface ClapDetectorComponentProps {
     timestamp: number;
     }
 
-const ClapDetectorComponent: React.FC<ClapDetectorComponentProps>  = ({timestamp}) => {
+const ClapDetectorComponent: React.FC<ClapDetectorComponentProps>  = ( {timestamp} ) => {
   const [clapTimestamps, setClapTimestamps] = useState<number[]>([]);
   const [isRecording, setIsRecording] = useState(false);
 
