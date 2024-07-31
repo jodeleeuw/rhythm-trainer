@@ -2,7 +2,6 @@ import './App.css';
 // import Score from './components/Score';
 // import MeasureItem from './components/MeasureItem';
 import DisplayBox from './pages/DisplayBox';
-import ClapDetectorComponent from './components/ClapDetectorComponent';
 
 
 function App() {
@@ -11,7 +10,6 @@ function App() {
     <>
       {/* <Score /> */}
       <DisplayBox />
-      <ClapDetectorComponent />
     </>  
   )
 }
