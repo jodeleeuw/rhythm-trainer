@@ -7,7 +7,7 @@ export class ClapDetector {
       // energy threshold for claps
       clapThreshold: 50,
       // typical freq range for claps
-      highFrequencyRange: [1800, 2800],
+      highFrequencyRange: [1500, 2800],
       minClapInterval: 300
     }
   
