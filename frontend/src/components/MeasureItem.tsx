@@ -1,5 +1,6 @@
 import Measure from "../lib/Measure";
 import ScoreComponent from "./ScoreComponent";
+import { useState } from 'react';
 
 interface MeasureItemProps {
   measure: Measure;
@@ -10,6 +11,8 @@ interface MeasureItemProps {
 
 
 const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id, score, setScore}) => {
+  const [isStarted, setIsStarted] = useState(false);
+
   const playBeat = (bpm: number, beats: number) => {
     const audioCtx = new AudioContext();
     const gainNode = audioCtx.createGain();
@@ -38,7 +41,10 @@ const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id, score, setScore}
 
     // then call the test method to see whether it matches
 
+    // turn off the button here
+
     setScore(score + measure.getPoints()); // replace this with score calculated by the method
+    setIsStarted(true);
   }
 
   return ( 
@@ -50,7 +56,11 @@ const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id, score, setScore}
           <p className='measureField'>{measure.getBpm()} bpm</p>
         </div>
         <ScoreComponent notes={measure.getScore()} timeSignature={measure.getTimeSignatureString()} id={id}/>
-        <button onClick={handleStart}>Start</button>
+        {isStarted ? (
+          <p>Points awarded: {measure.getPoints()}</p> // replace this with points calculated
+        ) : (
+          <button onClick={handleStart}>Start</button>
+        )}
       </div>
     </>
   )
