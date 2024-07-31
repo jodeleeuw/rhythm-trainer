@@ -1,24 +1,20 @@
-import Score from "./Score";
 import Measure from "./Measure";
 
 export class AccuracyCalculator{
-    private measure!: Measure;
-    private score!: Score;
-    private scoreTimestamps!: Array<number>;
-    private clapTimestamps!: Array<number>;
-    private durationInSeconds: number
-    private scoreDictionary!: Map<string, number>;
+    private scoreTimestamps: Array<number>;
+    private clapTimestamps: Array<number>;
 
-    constructor(durationInSeconds: number){ 
-        this.durationInSeconds = durationInSeconds;
+    constructor(){ 
+        this.scoreTimestamps = [];
+        this.clapTimestamps = [];
 
     }
 
-    scoreToTimestamps(measure: Measure): void {
-        const score = measure.getScore();
+    private scoreToTimestamps(measure: Measure): void {
+
         const bpm = measure.getBpm();
 
-        const rhythm = this.measure.getRhythm();
+        const rhythm = measure.getRhythm();
 
         const beatsPerMeasure = measure.getTimeSignature()[0];
         const beatType: number = 1 / measure.getTimeSignature()[1];
@@ -34,25 +30,50 @@ export class AccuracyCalculator{
 
         //Normalizing rhythm with respect to beatType
         const normalizedRhythm = rhythm.map(duration => duration / beatType);
+        console.log(normalizedRhythm);
 
-        //Seconds per beat
-        const spb = 60 / bpm;
+        //ms per beat
+        const mspb = (60 / bpm) * 1000;
+
+        // Initialize cumulative duration
+        let cumulativeDuration = 1 * mspb;
 
         //Timestamp for each note
-        const noteTimestamps = normalizedRhythm.map(duration => duration * spb);
+        const noteTimestamps = normalizedRhythm.map(duration => {
+            const timestamp = cumulativeDuration; // Convert cumulative duration to timestamp
+            cumulativeDuration += duration * mspb ; // Update cumulative duration
+            return timestamp;
+        });
 
+        console.log(noteTimestamps);
         this.scoreTimestamps = noteTimestamps;
     }
        
-    calculateScore(strictness: number = 500, measure: Measure): string {
+    calculateScore(measure: Measure, clapTimestamps: Array<number>, strictness: number = 500): number {
 
         this.scoreToTimestamps(measure);
 
-        if (this.clapTimestamps.length === 0) return 'No claps!';
+        let numberCorrect = 0;
+        let accuracy: number;
 
-        for (const note in this.scoreTimestamps) {
-            
+        for (let i = 0; i < this.scoreTimestamps.length; i++) {
+            const scoreTimestamp = this.scoreTimestamps[i];
+            const clapTimestamp = clapTimestamps[i];
+
+            console.log(`scoreTimestamp: ${scoreTimestamp}, clapTimestamp: ${clapTimestamp}`);
+
+
+            const difference = Math.abs(scoreTimestamp - clapTimestamp);
+
+            console.log(difference);
+            if (difference < strictness) {
+                numberCorrect++
         }
+        }
+
+        accuracy = numberCorrect / this.scoreTimestamps.length;
+
+        return accuracy;
 
 
     }

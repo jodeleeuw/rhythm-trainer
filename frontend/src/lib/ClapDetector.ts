@@ -1,15 +1,19 @@
+import { AccuracyCalculator } from "./Calculator"
+import Measure from "./Measure";
+
 export default class ClapDetector {
 
     options = {
       // energy threshold for claps
-      clapThreshold: 60,
+      clapThreshold: 50,
       // typical freq range for claps
-      highFrequencyRange: [2000, 2800],
+      highFrequencyRange: [1800, 2800],
       minClapInterval: 300
     }
   
     private lastClapTime: number = 0
     private bufferLength: number
+    private calculator: AccuracyCalculator;
     analyserNode: AnalyserNode
     frequencyData: Uint8Array
     audioContext: AudioContext
@@ -23,7 +27,6 @@ export default class ClapDetector {
       this.options = Object.assign(this.options, options)
       this.lastClapTime = 0
       this.detectClap = this.detectClap.bind(this)
-  
       this.audioContext = new AudioContext()
       this.analyserNode = this.audioContext.createAnalyser()
       // high frequency, short fft size
@@ -36,6 +39,8 @@ export default class ClapDetector {
   
       this.bufferLength = this.analyserNode.frequencyBinCount
       this.frequencyData = new Uint8Array(this.bufferLength)
+
+      this.calculator = new AccuracyCalculator();
     }
 
 
@@ -102,7 +107,6 @@ export default class ClapDetector {
         const source = this.audioContext.createBufferSource();
         source.buffer = audioBufferToProcess;
         source.connect(this.analyserNode);
-        this.analyserNode.connect(this.audioContext.destination);
         source.start(0);
     
         // Since we cannot use requestAnimationFrame, we manually call detectClap in a loop
@@ -152,5 +156,12 @@ export default class ClapDetector {
       }
       }
 
+    getClapTimestamps() {
+        return this.clapTimestamps;
+    }
+
+    getAccuracy(measure: Measure): number {
+        return this.calculator.calculateScore(measure, this.clapTimestamps);
+    }
   
   }
