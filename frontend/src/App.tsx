@@ -1,15 +1,17 @@
 import './App.css';
-// import Score from './components/Score';
-// import MeasureItem from './components/MeasureItem';
+import { useState } from 'react';
 import DisplayBox from './pages/DisplayBox';
 
 
 function App() {
+  const [ score, setScore ] = useState<number>(0);
 
   return (
     <>
+      <h1>{score}</h1>
       {/* <Score /> */}
-      <DisplayBox />
+      <DisplayBox score={score} setScore={setScore} />
+      <ClapDetectorComponent /> {/* Shoudl be deleted later */}
     </>  
   )
 }

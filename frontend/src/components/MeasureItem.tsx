@@ -1,22 +1,50 @@
 import Measure from "../lib/Measure";
 import ScoreComponent from "./ScoreComponent";
+import { useState } from 'react';
 
 interface MeasureItemProps {
   measure: Measure;
   id: number; // Add key as a prop
+  score: number;
+  setScore: (score: number) => void;
 }
 
-const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id }) => {
 
+const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id, score, setScore}) => {
+  const [isStarted, setIsStarted] = useState(false);
+
+  const playBeat = (bpm: number, beats: number) => {
+    const audioCtx = new AudioContext();
+    const gainNode = audioCtx.createGain();
+    gainNode.connect(audioCtx.destination);
+  
+    const beatDuration = 60 / bpm;
+    const startTime = audioCtx.currentTime;
+  
+    for (let i = 0; i < beats; i++) {
+      const osc = audioCtx.createOscillator();
+      osc.type = 'sine'; // You can change the waveform type here
+      osc.frequency.setValueAtTime(440, startTime + i * beatDuration); // A4 tone for the beat
+      osc.connect(gainNode);
+  
+      osc.start(startTime + i * beatDuration);
+      osc.stop(startTime + i * beatDuration + 0.1); // Each beat lasts 0.1 seconds
+    }
+  };
+  
   const handleStart = () => {
-    console.log("Start has been clicked"); 
-    // first play the metronome at the speed of the item testMeasure.getBpm();
+    const bpm = measure.getBpm();
+    const beats = measure.getTimeSignatureBeats(); // can implement a screen changing thing here
+    playBeat(bpm, beats);  
       
     // then record 
 
     // then call the test method to see whether it matches
 
-    // how does this interface with other screens?
+    // turn off the button here
+
+    setScore(score + measure.getPoints()); // replace this with score calculated by the method
+    setIsStarted(true);
   }
 
   return ( 
@@ -28,7 +56,11 @@ const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id }) => {
           <p className='measureField'>{measure.getBpm()} bpm</p>
         </div>
         <ScoreComponent notes={measure.getScore()} timeSignature={measure.getTimeSignatureString()} id={id}/>
-        <button onClick={handleStart}>Start</button>
+        {isStarted ? (
+          <p>Points awarded: {measure.getPoints()}</p> // replace this with points calculated
+        ) : (
+          <button onClick={handleStart}>Start</button>
+        )}
       </div>
     </>
   )
