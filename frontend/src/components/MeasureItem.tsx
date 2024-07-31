@@ -4,10 +4,12 @@ import ScoreComponent from "./ScoreComponent";
 interface MeasureItemProps {
   measure: Measure;
   id: number; // Add key as a prop
+  score: number;
+  setScore: (score: number) => void;
 }
 
 
-const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id }) => {
+const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id, score, setScore}) => {
   const playBeat = (bpm: number, beats: number) => {
     const audioCtx = new AudioContext();
     const gainNode = audioCtx.createGain();
@@ -31,12 +33,12 @@ const MeasureItem: React.FC<MeasureItemProps> = ({ measure, id }) => {
     const bpm = measure.getBpm();
     const beats = measure.getTimeSignatureBeats(); // can implement a screen changing thing here
     playBeat(bpm, beats);  
-       
+      
     // then record 
 
     // then call the test method to see whether it matches
 
-    // how does this interface with other screens?
+    setScore(score + measure.getPoints()); // replace this with score calculated by the method
   }
 
   return ( 
