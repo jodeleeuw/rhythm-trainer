@@ -4,14 +4,13 @@ import DisplayBox from './pages/DisplayBox';
 
 
 function App() {
-  const [ score, setScore ] = useState<number>(0);
+  const [ points, setPoints ] = useState<number>(0);
 
   return (
     <>
-      <h1>{score}</h1>
+      <h1>{points}</h1>
       {/* <Score /> */}
-      <DisplayBox score={score} setScore={setScore} />
-      <ClapDetectorComponent /> {/* Shoudl be deleted later */}
+      <DisplayBox points={points} setPoints={setPoints} />
     </>  
   )
 }

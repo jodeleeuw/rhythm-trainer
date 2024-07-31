@@ -2,11 +2,11 @@ import { displayBoxData } from "../data/data";
 import MeasureItem from "../components/MeasureItem";
 
 interface DisplayBoxProps {
-  score: number;
-  setScore: (score: number) => void;
+  points: number;
+  setPoints: (points: number) => void;
 }
 
-const DisplayBox: React.FC<DisplayBoxProps> = ( { score, setScore}) => {
+const DisplayBox: React.FC<DisplayBoxProps> = ( {points, setPoints}) => {
   return (
     <>
       <div className="displayBoxContainer">
@@ -15,8 +15,8 @@ const DisplayBox: React.FC<DisplayBoxProps> = ( { score, setScore}) => {
             key={index} 
             measure={measure} 
             id={index} 
-            score={score} 
-            setScore={setScore}
+            points={points} 
+            setPoints={setPoints}
           />
         ))}
       </div>

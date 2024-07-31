@@ -1,7 +1,7 @@
 import { AccuracyCalculator } from "./Calculator"
 import Measure from "./Measure";
 
-export default class ClapDetector {
+export class ClapDetector {
 
     options = {
       // energy threshold for claps
