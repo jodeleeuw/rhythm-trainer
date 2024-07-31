@@ -43,6 +43,17 @@ class Measure {
     return this.category;
   }
 
+  getDuration(): number {
+    
+    const beatsPerMeasure = this.timeSignature[0];
+
+    const spb = 60 / this.bpm;
+
+    const secondsPerMeasure = beatsPerMeasure * spb;
+
+    return secondsPerMeasure;
+  }
+
 }
 
 export default Measure;
