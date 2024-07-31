@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import ClapDetector from '../lib/ClapDetector';
 
-const ClapDetectorComponent = () => {
+interface ClapDetectorComponentProps {
+    timestamp: number;
+    }
+
+const ClapDetectorComponent: React.FC<ClapDetectorComponentProps>  = ({timestamp}) => {
   const [clapTimestamps, setClapTimestamps] = useState<number[]>([]);
   const [isRecording, setIsRecording] = useState(false);
 

@@ -23,12 +23,20 @@ class Measure {
     return this.score.getScore();
   }
 
+  getRhythm () {
+    return this.score.getRhythm();
+  }
+
   getBpm(): number { 
     return this.bpm;
   }
 
   getTimeSignatureString(): string{
     return this.timeSignature[0] + "/" + this.timeSignature[1];
+  }
+
+  getTimeSignature(): number[] {
+    return this.timeSignature;
   }
 
   getCategory(): string {
